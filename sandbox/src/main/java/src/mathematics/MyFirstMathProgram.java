@@ -3,7 +3,7 @@ package src.mathematics;
 // import src.mathematics.Point;
 import java.text.DecimalFormat;
 
-public class MyFirstProgram {
+public class MyFirstMathProgram {
 
     public static void main(String[] args) {
         System.out.println("Hello, World!");
