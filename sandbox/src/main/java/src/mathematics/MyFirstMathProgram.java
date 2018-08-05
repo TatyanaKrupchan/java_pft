@@ -1,6 +1,6 @@
-package src.mathematics;
+package src.mathematics;// import src.mathematics.Point;
+import src.mathematics.Point;
 
-// import src.mathematics.Point;
 import java.text.DecimalFormat;
 
 public class MyFirstMathProgram {
