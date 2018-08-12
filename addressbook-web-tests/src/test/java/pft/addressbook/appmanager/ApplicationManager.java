@@ -1,19 +1,18 @@
-package pft.addressbook;
+package pft.addressbook.appmanager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
+import pft.addressbook.model.ContactData;
+import pft.addressbook.model.GroupData;
 
 import java.security.SecureRandom;
 import java.util.concurrent.TimeUnit;
 
-public class BaseTest {
+public class ApplicationManager {
     FirefoxDriver wd;
 
-    @BeforeMethod
-    public void setUp() throws Exception {
+    public void init() {
         final String login = "admin";
         final String password = "secret";
         wd = new FirefoxDriver(new FirefoxOptions().setLegacy(true));
@@ -34,7 +33,7 @@ public class BaseTest {
         wd.findElement(By.name(fieldName)).sendKeys(fieldValue);
     }
 
-    protected String randomString(int len) {
+    public String randomString(int len) {
         final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         SecureRandom rnd = new SecureRandom();
         StringBuilder sb = new StringBuilder(len);
@@ -43,15 +42,15 @@ public class BaseTest {
         return sb.toString();
     }
 
-    protected void returnToHomePage() {
+    public void returnToHomePage() {
         wd.findElement(By.xpath("//div[@id='content']/form/input[21]")).click();
     }
 
-    protected void submitNewContactData() {
+    public void submitNewContactData() {
         wd.findElement(By.name("theform")).click();
     }
 
-    protected void fillContactData(ContactData contactData) {
+    public void fillContactData(ContactData contactData) {
         // wd.findElement(By.name("theform")).click();
         fillAField("firstname", contactData.getFirstName());
         fillAField("middlename", contactData.getMiddleName());
@@ -68,42 +67,41 @@ public class BaseTest {
         fillAField("email2", contactData.getEmail2());
     }
 
-    protected void initiateCreateNewContact() {
+    public void initiateCreateNewContact() {
         wd.findElement(By.linkText("ADD_NEW")).click();
     }
 
-    @AfterMethod
-    public void tearDown() {
+    public void stop() {
         wd.quit();
     }
 
-    protected void returnBackToGroupsTab() {
+    public void returnBackToGroupsTab() {
         wd.findElement(By.linkText("group page")).click();
     }
 
-    protected void gotoGroupsTab() {
+    public void gotoGroupsTab() {
         wd.findElement(By.linkText("GROUPS")).click();
     }
 
-    protected void submitNewGroupData() {
+    public void submitNewGroupData() {
         wd.findElement(By.name("submit")).click();
     }
 
-    protected void fillNewGroupData(GroupData groupData) {
+    public void fillNewGroupData(GroupData groupData) {
         fillAField("group_name", groupData.getGroupName());
         fillAField("group_header", groupData.getGroupHeader());
         fillAField("group_footer", groupData.getGroupComment());
     }
 
-    protected void initCreateNewGroup() {
+    public void initCreateNewGroup() {
         wd.findElement(By.name("new")).click();
     }
 
-    protected void deleteGroup() {
+    public void deleteGroup() {
         wd.findElement(By.name("delete")).click();
     }
 
-    protected void selectGroup() {
+    public void selectGroup() {
         if (!wd.findElement(By.name("selected[]")).isSelected()) {
             wd.findElement(By.name("selected[]")).click();
         }
