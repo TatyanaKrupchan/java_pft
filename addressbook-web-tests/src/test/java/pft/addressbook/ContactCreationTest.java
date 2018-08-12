@@ -47,7 +47,7 @@ public class ContactCreationTest {
     }
 
     @Test
-    public void ContactCreationTest() {
+    public void testContactCreation() {
         String generatedString = randomString(10);
         ContactData contactDetails = new ContactData("Test_FirstName " + generatedString, "Test_MiddleName", "Test_LastName " + generatedString,
                 "Test_Nickname", "Test_Title", "Test_Company", "Test_Address",

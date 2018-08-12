@@ -78,12 +78,4 @@ public class GroupCreationTest {
         wd.quit();
     }
 
-    public static boolean isAlertPresent(FirefoxDriver wd) {
-        try {
-            wd.switchTo().alert();
-            return true;
-        } catch (NoAlertPresentException e) {
-            return false;
-        }
-    }
 }
