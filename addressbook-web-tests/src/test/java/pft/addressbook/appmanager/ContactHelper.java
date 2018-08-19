@@ -2,7 +2,10 @@ package pft.addressbook.appmanager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import pft.addressbook.model.ContactData;
+
 
 public class ContactHelper extends HelperBase {
 
@@ -42,11 +45,25 @@ public class ContactHelper extends HelperBase {
     }
 
     public void deleteContact() {
-        click(By.xpath("//input[@value='DELETE']"));
+        click(By.xpath("//div[@id='content']//input[@value='DELETE']"));
+
     }
 
     public void acceptContactDeletion(int recordsCount){
-        String alertText = "Delete " + recordsCount + "addresses?";
+        String alertText = "Delete " + recordsCount + " addresses?";
         acceptAlertWithVerification(alertText);
     }
+
+    public void initModification() {
+        click(By.xpath("//a/img[@title='EDIT']"));
+    }
+
+    public void submitContactModificationData() {
+        click(By.name("update"));
+    }
+
+    public void waitForRedirectionToMainPage() {
+        WebDriverWait wait = new WebDriverWait(wd, 60);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("MainForm")));
+   }
 }

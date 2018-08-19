@@ -31,14 +31,20 @@ public class HelperBase {
     }
 
     public void acceptAlert() {
-            wd.switchTo().alert().accept();
+        wd.switchTo().alert().accept();
     }
 
     public void acceptAlertWithVerification(String alertMessage) {
         String actualAlertText = wd.switchTo().alert().getText();
-        if (actualAlertText == alertMessage) {
+        System.out.println("Expected alert: " + alertMessage);
+        System.out.println("Actual alert: " + actualAlertText);
+        if (actualAlertText.equals(alertMessage)) {
+            System.out.println("Text in alert is as expected");
             wd.switchTo().alert().accept();
-        } else wd.switchTo().alert().dismiss();
+        } else {
+            wd.switchTo().alert().dismiss();
+            System.out.println("Text in alert is: " + actualAlertText + "; expected alert is: " + alertMessage);
+        }
     }
 
     public boolean isAlertPresent() {

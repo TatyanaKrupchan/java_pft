@@ -1,9 +1,7 @@
 package pft.addressbook.appmanager;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
-import pft.addressbook.model.ContactData;
 
 import java.security.SecureRandom;
 import java.util.concurrent.TimeUnit;

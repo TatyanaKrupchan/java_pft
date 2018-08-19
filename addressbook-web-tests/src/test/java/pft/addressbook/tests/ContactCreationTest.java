@@ -18,6 +18,4 @@ public class ContactCreationTest extends TestBase {
         app.getContactHelper().submitNewContactData();
         app.getNavigationHelper().returnToHomePage();
     }
-
-
 }
