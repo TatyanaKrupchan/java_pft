@@ -30,6 +30,17 @@ public class HelperBase {
         wd.findElement(locator).click();
     }
 
+    public void acceptAlert() {
+            wd.switchTo().alert().accept();
+    }
+
+    public void acceptAlertWithVerification(String alertMessage) {
+        String actualAlertText = wd.switchTo().alert().getText();
+        if (actualAlertText == alertMessage) {
+            wd.switchTo().alert().accept();
+        } else wd.switchTo().alert().dismiss();
+    }
+
     public boolean isAlertPresent() {
         try {
             wd.switchTo().alert();
