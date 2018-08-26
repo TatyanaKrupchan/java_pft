@@ -2,6 +2,7 @@ package pft.addressbook.appmanager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import pft.addressbook.model.GroupData;
 
 public class GroupHelper extends HelperBase {
@@ -34,6 +35,14 @@ public class GroupHelper extends HelperBase {
     public void selectGroup() {
         if (!wd.findElement(By.name("selected[]")).isSelected()) {
             click(By.name("selected[]"));
+            // wd.findElement(By.name("selected[]")).click();
+        }
+    }
+
+    public void selectGroup(int index) {
+        WebElement element = wd.findElements(By.name("selected[]")).get(index);
+        if (!element.isSelected()) {
+            element.click();
             // wd.findElement(By.name("selected[]")).click();
         }
     }
