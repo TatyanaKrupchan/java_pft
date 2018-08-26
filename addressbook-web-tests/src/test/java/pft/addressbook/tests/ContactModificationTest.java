@@ -1,5 +1,6 @@
 package pft.addressbook.tests;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import pft.addressbook.model.ContactData;
 
@@ -21,9 +22,13 @@ public class ContactModificationTest extends TestBase {
             app.getContactHelper().createNewContact(contactDetails);
             app.getNavigationHelper().returnToHomePage();
         }
+        int before = app.getContactHelper().getContactsCount();
         app.getContactHelper().initModification();
         app.getContactHelper().fillContactData(contactDetailsEdited);
         app.getContactHelper().submitContactModificationData();
         app.getNavigationHelper().waitForRedirectionToMainPage();
+        int after = app.getContactHelper().getContactsCount();
+        Assert.assertEquals(after, before);
+
     }
 }
