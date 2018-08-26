@@ -15,6 +15,6 @@ public class ContactModificationTest extends TestBase {
         app.getContactHelper().initModification();
         app.getContactHelper().fillContactData(contactDetailsEdited);
         app.getContactHelper().submitContactModificationData();
-        app.getContactHelper().waitForRedirectionToMainPage();
+        app.getNavigationHelper().waitForRedirectionToMainPage();
     }
 }

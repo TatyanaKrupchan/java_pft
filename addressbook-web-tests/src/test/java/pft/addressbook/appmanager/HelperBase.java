@@ -2,8 +2,8 @@ package pft.addressbook.appmanager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class HelperBase {
 
@@ -14,13 +14,20 @@ public class HelperBase {
     }
 
     protected void fillAField(String fieldName, String fieldValue) {
-        click(By.name(fieldName));
-        clearElement(By.name(fieldName));
-        insertValue(fieldName, fieldValue);
+        if (fieldValue != null) {
+            click(By.name(fieldName));
+            String existingValue = wd.findElement(By.name(fieldName)).getAttribute("value");
+            if (!fieldValue.equals(existingValue)) {
+                clearElement(By.name(fieldName));
+                insertValue(fieldName, fieldValue);
+            }
+        }
     }
 
     protected void insertValue(String fieldName, String fieldValue) {
-        wd.findElement(By.name(fieldName)).sendKeys(fieldValue);
+        if (fieldValue != null) {
+            wd.findElement(By.name(fieldName)).sendKeys(fieldValue);
+        }
     }
 
     protected void clearElement(By locator) {
@@ -57,4 +64,12 @@ public class HelperBase {
         }
     }
 
+    protected boolean isElementPresent(By locator) {
+        try {
+            wd.findElement(locator);
+            return true;
+        } catch (NoSuchElementException ex) {
+            return false;
+        }
+    }
 }

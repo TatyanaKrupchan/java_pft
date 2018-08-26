@@ -2,23 +2,34 @@ package pft.addressbook.appmanager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class NavigationHelper {
-    private WebDriver wd;
+public class NavigationHelper extends HelperBase {
 
     public NavigationHelper(WebDriver wd) {
-        this.wd = wd;
+        super(wd);
     }
 
     public void returnToHomePage() {
-        wd.findElement(By.xpath("//div[@id='content']/form/input[21]")).click();
+        click(By.xpath("//div[@id='content']/form/input[21]"));
     }
 
     public void returnBackToGroupsTab() {
-        wd.findElement(By.linkText("group page")).click();
+        click(By.linkText("group page"));
     }
 
     public void gotoGroupsTab() {
-        wd.findElement(By.linkText("GROUPS")).click();
+        if (isElementPresent(By.tagName("h1"))
+                && wd.findElement(By.tagName("h1")).getText().equals("Groups")
+                && isElementPresent(By.name("new"))) {
+            return;
+        }
+        click(By.linkText("GROUPS"));
+    }
+
+    public void waitForRedirectionToMainPage() {
+        WebDriverWait wait = new WebDriverWait(wd, 60);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("MainForm")));
     }
 }

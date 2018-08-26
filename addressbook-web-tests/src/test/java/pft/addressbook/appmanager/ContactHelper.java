@@ -2,8 +2,6 @@ package pft.addressbook.appmanager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import pft.addressbook.model.ContactData;
 
 
@@ -62,8 +60,4 @@ public class ContactHelper extends HelperBase {
         click(By.name("update"));
     }
 
-    public void waitForRedirectionToMainPage() {
-        WebDriverWait wait = new WebDriverWait(wd, 60);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("MainForm")));
-   }
 }

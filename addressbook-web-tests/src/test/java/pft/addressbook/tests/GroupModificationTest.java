@@ -11,6 +11,10 @@ public class GroupModificationTest extends TestBase {
         GroupData editData = new GroupData("Test_edit_groupname1", "Test_edit_groupheader1",
                 "Test_edit_comment1");
         app.getNavigationHelper().gotoGroupsTab();
+        if (! app.getGroupHelper().isGroupPresent()) {
+            app.getGroupHelper().createGroup(new GroupData("Test_groupname1", null, null));
+            app.getNavigationHelper().returnBackToGroupsTab();
+        }
         app.getGroupHelper().selectGroup();
         app.getGroupHelper().initGroupModification();
         app.getGroupHelper().fillNewGroupData(editData);

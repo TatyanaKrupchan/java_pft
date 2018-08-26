@@ -9,9 +9,7 @@ public class GroupCreationTest extends TestBase {
     public void testForGroup() {
         // wd.findElement(By.xpath("//div[@id='content']//h1[.='GROUPS']")).click();
         app.getNavigationHelper().gotoGroupsTab();
-        app.getGroupHelper().initCreateNewGroup();
-        app.getGroupHelper().fillNewGroupData(new GroupData("Test_groupname1", "Test_groupheader1", "Test_comment1"));
-        app.getGroupHelper().submitNewGroupData();
+        app.getGroupHelper().createGroup(new GroupData("Test_groupname1", "Test_groupheader1", "Test_comment1"));
         app.getNavigationHelper().returnBackToGroupsTab();
     }
 
