@@ -12,6 +12,15 @@ public class ContactModificationTest extends TestBase {
                 "Test_Nickname_edit", "Test_Title_edit", "Test_Company_edit", "Test_Address_edit",
                 "Test_PhoneHome_edit", "Test_PhoneMobile_edit", "Test_PhoneWork_edit", "Test_Fax_edit",
                 "Test_Email_edit", "Test_Email2_edit");
+        if (!app.getContactHelper().isContactPresent()) {
+            generatedString = app.randomString(10);
+            ContactData contactDetails = new ContactData("Test_FirstName " + generatedString, null, null,
+                    null, null, null, null,
+                    null, null, null, null,
+                    "Test_Email", "Test_Email2");
+            app.getContactHelper().createNewContact(contactDetails);
+            app.getNavigationHelper().returnToHomePage();
+        }
         app.getContactHelper().initModification();
         app.getContactHelper().fillContactData(contactDetailsEdited);
         app.getContactHelper().submitContactModificationData();

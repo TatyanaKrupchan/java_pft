@@ -13,9 +13,10 @@ public class ContactCreationTest extends TestBase {
                 "Test_PhoneHome", "Test_PhoneMobile", "Test_PhoneWork", "Test_Fax",
                 "Test_Email", "Test_Email2");
         System.out.println("New name generated: " + generatedString);
-        app.getContactHelper().initiateCreateNewContact();
+        app.getContactHelper().createNewContact(contactDetails);
+/*        app.getContactHelper().initiateCreateNewContact();
         app.getContactHelper().fillContactData(contactDetails);
-        app.getContactHelper().submitNewContactData();
+        app.getContactHelper().submitNewContactData();*/
         app.getNavigationHelper().returnToHomePage();
     }
 }
