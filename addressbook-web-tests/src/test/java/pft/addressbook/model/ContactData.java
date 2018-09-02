@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class ContactData {
     private int id;
-    private String firstName;
+    private final String firstName;
     private final String middleName;
     private final String lastName;
     private final String nickName;
