@@ -1,12 +1,11 @@
 package pft.addressbook.tests;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import pft.addressbook.model.ContactData;
+import pft.addressbook.model.Contacts;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ContactCreationTest extends TestBase {
 
@@ -23,16 +22,12 @@ public class ContactCreationTest extends TestBase {
                 .withMobilePhone(contactDetails.getMobilePhone()).withWorkPhone(contactDetails.getWorkPhone())
                 .withEmail1(contactDetails.getEmail1()).withEmail2(contactDetails.getEmail2());
         System.out.println("New name generated: " + generatedString);
-        Set<ContactData> before = app.contactHelper().getContactsSet();
+        Contacts before = app.contactHelper().getContactsSet();
         app.contactHelper().createNewContact(contactDetails);
         app.goTo().returnToHomePage();
-        Set<ContactData> after = app.contactHelper().getContactsSet();
-        contactDetailsShort.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt());
-        before.add(contactDetailsShort);
+        Contacts after = app.contactHelper().getContactsSet();
 
-        System.out.println("Before: " + before);
-        System.out.println("After: " + after);
-
-        Assert.assertEquals(after, before);
+        assertThat(after,
+                equalTo(before.withAdded(contactDetailsShort.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
     }
 }
