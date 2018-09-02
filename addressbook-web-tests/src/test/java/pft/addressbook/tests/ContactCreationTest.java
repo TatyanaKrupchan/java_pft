@@ -4,6 +4,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import pft.addressbook.model.ContactData;
 
+import java.util.Comparator;
+import java.util.List;
+
 public class ContactCreationTest extends TestBase {
 
     @Test
@@ -13,14 +16,23 @@ public class ContactCreationTest extends TestBase {
                 "Test_Nickname", "Test_Title", "Test_Company", "Test_Address",
                 "Test_PhoneHome", "Test_PhoneMobile", "Test_PhoneWork", "Test_Fax",
                 "Test_Email", "Test_Email2");
+        ContactData contactDetailsShort = new ContactData(contactDetails.getFirstName(), null, contactDetails.getLastName(),
+                null, null, null, contactDetails.getAddress(),
+                contactDetails.getHomePhone(), contactDetails.getMobilePhone(), contactDetails.getWorkPhone(), null,
+                contactDetails.getEmail1(), contactDetails.getEmail2());
         System.out.println("New name generated: " + generatedString);
-        int before = app.getContactHelper().getContactsCount();
+        List<ContactData> before = app.getContactHelper().getContactsList();
         app.getContactHelper().createNewContact(contactDetails);
-/*        app.getContactHelper().initiateCreateNewContact();
-        app.getContactHelper().fillContactData(contactDetails);
-        app.getContactHelper().submitNewContactData();*/
         app.getNavigationHelper().returnToHomePage();
-        int after = app.getContactHelper().getContactsCount();
-        Assert.assertEquals(after, before + 1);
+        List<ContactData> after = app.getContactHelper().getContactsList();
+        before.add(contactDetailsShort);
+        Comparator<? super ContactData> byLastName = (g1, g2) ->  g1.getLastName().compareTo(g2.getLastName());
+        before.sort(byLastName);
+        after.sort(byLastName);
+
+        System.out.println("Before: " + before);
+        System.out.println("After: " + after);
+
+        Assert.assertEquals(after, before);
     }
 }

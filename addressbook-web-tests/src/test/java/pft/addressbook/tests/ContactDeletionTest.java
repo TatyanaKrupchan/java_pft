@@ -4,6 +4,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import pft.addressbook.model.ContactData;
 
+import java.util.Comparator;
+import java.util.List;
+
 public class ContactDeletionTest extends TestBase {
 
     @Test
@@ -18,12 +21,23 @@ public class ContactDeletionTest extends TestBase {
             app.getContactHelper().createNewContact(contactDetails);
             app.getNavigationHelper().returnToHomePage();
         }
-        int before = app.getContactHelper().getContactsCount();
+        List<ContactData> before = app.getContactHelper().getContactsList();
         app.getContactHelper().selectContact();
         app.getContactHelper().deleteContact();
         app.getContactHelper().acceptContactDeletion(1);
         app.getNavigationHelper().waitForRedirectionToMainPage();
-        int after = app.getContactHelper().getContactsCount();
-        Assert.assertEquals(after, before - 1);
+
+        List<ContactData> after = app.getContactHelper().getContactsList();
+        before.remove(0);
+        Comparator<? super ContactData> byId = (g1, g2) -> Integer.compare(g1.getId(), g2.getId());
+        before.sort(byId);
+        after.sort(byId);
+        /*Comparator<? super ContactData> byLastName = (g1, g2) ->  g1.getLastName().compareTo(g2.getLastName());
+        before.sort(byLastName);
+        after.sort(byLastName);*/
+
+        System.out.println("Before: " + before);
+        System.out.println("After: " + after);
+        Assert.assertEquals(after, before);
     }
 }
