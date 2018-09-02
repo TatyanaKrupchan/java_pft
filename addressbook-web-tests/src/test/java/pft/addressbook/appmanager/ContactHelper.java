@@ -46,9 +46,11 @@ public class ContactHelper extends HelperBase {
         click(By.name("selected[]"));
     }
 
-    public void deleteContact() {
+    public void deleteContact(int countToRemove, ApplicationManager app) {
+        app.contactHelper().selectContact();
         click(By.xpath("//div[@id='content']//input[@value='DELETE']"));
-
+        app.contactHelper().acceptContactDeletion(countToRemove);
+        app.goTo().waitForRedirectionToMainPage();
     }
 
     public void acceptContactDeletion(int recordsCount) {
@@ -85,11 +87,28 @@ public class ContactHelper extends HelperBase {
             String lastName = element.findElement(By.xpath(".//td[2]")).getText();
             String firstName = element.findElement(By.xpath(".//td[3]")).getText();
             String id = element.findElement(By.tagName("input")).getAttribute("value");
-            ContactData contact = new ContactData(Integer.parseInt(id), firstName, null, lastName, null, null, null,
-                    null, null, null, null, null, null, null);
+            ContactData contact = new ContactData().withId(Integer.parseInt(id)).withFirstName(firstName).withLastName(lastName);
             contacts.add(contact);
         }
         return contacts;
 
     }
+
+    public void addGroupIfNotExist(ApplicationManager app) {
+        if (app.contactHelper().getContactsList().size() == 0) {
+            String generatedString = app.randomString(10);
+            ContactData contactDetails = new ContactData().withFirstName("Test_FirstName " + generatedString)
+                    .withEmail1("Test_Email").withEmail2("Test_Email2");
+            app.contactHelper().createNewContact(contactDetails);
+            app.goTo().returnToHomePage();
+        }
+    }
+
+    public void modifyContact(ContactData contactDetailsEdited, ApplicationManager app) {
+        app.contactHelper().initModification();
+        app.contactHelper().fillContactData(contactDetailsEdited);
+        app.contactHelper().submitContactModificationData();
+        app.goTo().waitForRedirectionToMainPage();
+    }
+
 }

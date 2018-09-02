@@ -1,6 +1,7 @@
 package pft.addressbook.tests;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pft.addressbook.model.ContactData;
 
@@ -9,41 +10,39 @@ import java.util.List;
 
 public class ContactModificationTest extends TestBase {
 
+    @BeforeMethod
+    public void ensurePrecondition() {
+        app.contactHelper().addGroupIfNotExist(app);
+    }
+
     @Test
     public void testContactModification() {
         String generatedString = app.randomString(8);
-        ContactData contactDetailsEdited = new ContactData("Test_FirstName_edit " + generatedString, "Test_MiddleName_edit ", "Test_LastName_edit " + generatedString,
-                "Test_Nickname_edit", "Test_Title_edit", "Test_Company_edit", "Test_Address_edit",
-                "Test_PhoneHome_edit", "Test_PhoneMobile_edit", "Test_PhoneWork_edit", "Test_Fax_edit",
-                "Test_Email_edit", "Test_Email2_edit");
-        /*ContactData contactDetailsEditedShort = new ContactData(contactDetailsEdited.getFirstName(), null, contactDetailsEdited.getLastName(),
-                null, null, null, contactDetailsEdited.getAddress(),
-                contactDetailsEdited.getHomePhone(), contactDetailsEdited.getMobilePhone(), contactDetailsEdited.getWorkPhone(), null,
-                contactDetailsEdited.getEmail1(), contactDetailsEdited.getEmail2());*/
+        ContactData contactDetailsEdited = new ContactData().withFirstName("Test_FirstName_edit " + generatedString)
+                .withMiddleName("Test_MiddleName_edit ").withLastName("Test_LastName_edit " + generatedString)
+                .withNickName("Test_Nickname_edit").withTitle("Test_Title_edit").withCompany("Test_Company_edit")
+                .withAddress("Test_Address_edit").withHomePhone("Test_PhoneHome_edit").withMobilePhone("Test_PhoneMobile_edit")
+                .withWorkPhone("Test_PhoneWork_edit").withFax("Test_Fax_edit").withEmail1("Test_Email_edit").withEmail2("Test_Email2_edit");
 
-        if (!app.getContactHelper().isContactPresent()) {
+        /*if (!app.contactHelper().isContactPresent()) {
             generatedString = app.randomString(10);
             ContactData contactDetails = new ContactData("Test_FirstName " + generatedString, null, null,
                     null, null, null, null,
                     null, null, null, null,
                     "Test_Email", "Test_Email2");
-            app.getContactHelper().createNewContact(contactDetails);
+            app.contactHelper().createNewContact(contactDetails);
             app.goTo().returnToHomePage();
-        }
+        }*/
 
-        // int before = app.getContactHelper().getContactsCount();
-
-        List<ContactData> before = app.getContactHelper().getContactsList();
-        app.getContactHelper().initModification();
-        app.getContactHelper().fillContactData(contactDetailsEdited);
-        app.getContactHelper().submitContactModificationData();
-        app.goTo().waitForRedirectionToMainPage();
-
-        List<ContactData> after = app.getContactHelper().getContactsList();
+        // int before = app.contactHelper().getContactsCount();
+        // in the test we edit the first contact record in the table
+        List<ContactData> before = app.contactHelper().getContactsList();
+        app.contactHelper().modifyContact(contactDetailsEdited, app);
+        List<ContactData> after = app.contactHelper().getContactsList();
         before.remove(0);
         before.add(contactDetailsEdited);
         // Comparator<? super ContactData> byId = (g1, g2) -> Integer.compare(g1.getId(), g2.getId());
-        Comparator<? super ContactData> byLastName = (g1, g2) ->  g1.getLastName().compareTo(g2.getLastName());
+        Comparator<? super ContactData> byLastName = (g1, g2) -> g1.getLastName().compareTo(g2.getLastName());
         before.sort(byLastName);
         after.sort(byLastName);
 
@@ -51,10 +50,7 @@ public class ContactModificationTest extends TestBase {
         System.out.println("After: " + after);
 
         Assert.assertEquals(after, before);
-
-
-        /*int after = app.getContactHelper().getContactsCount();
+        /*int after = app.contactHelper().getContactsCount();
         Assert.assertEquals(after, before);*/
-
     }
 }
