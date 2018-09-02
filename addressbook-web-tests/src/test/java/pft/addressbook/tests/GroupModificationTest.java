@@ -7,6 +7,7 @@ import pft.addressbook.model.GroupData;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 public class GroupModificationTest extends TestBase {
 
@@ -17,19 +18,17 @@ public class GroupModificationTest extends TestBase {
 
     @Test
     public void testGroupModification() {
-        List<GroupData> before = app.groupHelper().groupList();
-        int groupIndex = before.size() - 1;
-        GroupData editData = new GroupData().withId(before.get(groupIndex).getId()).withGroupName("Test_edit_groupname1")
+        Set<GroupData> before = app.groupHelper().groupSet();
+        GroupData modifiedGroup = before.iterator().next();
+        GroupData editData = new GroupData().withId(modifiedGroup.getId()).withGroupName("Test_edit_groupname1")
                 .withGroupHeader("Test_edit_groupheader1").withGroupComment("Test_edit_comment1");
 
-        app.groupHelper().modifyGroupData(groupIndex, editData, app);
-        List<GroupData> after = app.groupHelper().groupList();
+        app.groupHelper().modifyGroupData(editData, app);
+        Set<GroupData> after = app.groupHelper().groupSet();
         Assert.assertEquals(after.size(), before.size());
 
-        before.remove(groupIndex);
-        Comparator<? super GroupData> byId = (g1, g2) -> Integer.compare(g1.getId(), g2.getId());
-        before.sort(byId);
-        after.sort(byId);
+        before.remove(modifiedGroup);
+
         before.add(editData);
         Assert.assertEquals(before, after);
     }

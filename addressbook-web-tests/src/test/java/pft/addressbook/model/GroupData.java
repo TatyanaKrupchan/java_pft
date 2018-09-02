@@ -8,20 +8,6 @@ public class GroupData {
     private String groupHeader;
     private String groupComment;
 
-    /*public GroupData(int id, String groupName, String groupHeader, String groupComment) {
-        this.id = id;
-        this.groupName = groupName;
-        this.groupHeader = groupHeader;
-        this.groupComment = groupComment;
-    }
-
-    public GroupData(String groupName, String groupHeader, String groupComment) {
-        this.id = Integer.MAX_VALUE;
-        this.groupName = groupName;
-        this.groupHeader = groupHeader;
-        this.groupComment = groupComment;
-    }*/
-
     public int getId() {
         return id;
     }
@@ -71,11 +57,12 @@ public class GroupData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GroupData groupData = (GroupData) o;
-        return Objects.equals(groupName, groupData.groupName);
+        return id == groupData.id &&
+                Objects.equals(groupName, groupData.groupName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(groupName);
+        return Objects.hash(id, groupName);
     }
 }

@@ -6,6 +6,7 @@ import pft.addressbook.model.ContactData;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 public class ContactCreationTest extends TestBase {
 
@@ -22,14 +23,12 @@ public class ContactCreationTest extends TestBase {
                 .withMobilePhone(contactDetails.getMobilePhone()).withWorkPhone(contactDetails.getWorkPhone())
                 .withEmail1(contactDetails.getEmail1()).withEmail2(contactDetails.getEmail2());
         System.out.println("New name generated: " + generatedString);
-        List<ContactData> before = app.contactHelper().getContactsList();
+        Set<ContactData> before = app.contactHelper().getContactsSet();
         app.contactHelper().createNewContact(contactDetails);
         app.goTo().returnToHomePage();
-        List<ContactData> after = app.contactHelper().getContactsList();
+        Set<ContactData> after = app.contactHelper().getContactsSet();
+        contactDetailsShort.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt());
         before.add(contactDetailsShort);
-        Comparator<? super ContactData> byLastName = (g1, g2) -> g1.getLastName().compareTo(g2.getLastName());
-        before.sort(byLastName);
-        after.sort(byLastName);
 
         System.out.println("Before: " + before);
         System.out.println("After: " + after);

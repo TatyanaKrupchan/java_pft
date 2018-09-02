@@ -7,6 +7,7 @@ import pft.addressbook.model.ContactData;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 public class ContactModificationTest extends TestBase {
 
@@ -24,33 +25,18 @@ public class ContactModificationTest extends TestBase {
                 .withAddress("Test_Address_edit").withHomePhone("Test_PhoneHome_edit").withMobilePhone("Test_PhoneMobile_edit")
                 .withWorkPhone("Test_PhoneWork_edit").withFax("Test_Fax_edit").withEmail1("Test_Email_edit").withEmail2("Test_Email2_edit");
 
-        /*if (!app.contactHelper().isContactPresent()) {
-            generatedString = app.randomString(10);
-            ContactData contactDetails = new ContactData("Test_FirstName " + generatedString, null, null,
-                    null, null, null, null,
-                    null, null, null, null,
-                    "Test_Email", "Test_Email2");
-            app.contactHelper().createNewContact(contactDetails);
-            app.goTo().returnToHomePage();
-        }*/
-
-        // int before = app.contactHelper().getContactsCount();
         // in the test we edit the first contact record in the table
-        List<ContactData> before = app.contactHelper().getContactsList();
+        Set<ContactData> before = app.contactHelper().getContactsSet();
+        ContactData modifyContact = before.iterator().next();
+
         app.contactHelper().modifyContact(contactDetailsEdited, app);
-        List<ContactData> after = app.contactHelper().getContactsList();
-        before.remove(0);
+        Set<ContactData> after = app.contactHelper().getContactsSet();
+        before.remove(modifyContact);
         before.add(contactDetailsEdited);
-        // Comparator<? super ContactData> byId = (g1, g2) -> Integer.compare(g1.getId(), g2.getId());
-        Comparator<? super ContactData> byLastName = (g1, g2) -> g1.getLastName().compareTo(g2.getLastName());
-        before.sort(byLastName);
-        after.sort(byLastName);
 
         System.out.println("Before: " + before);
         System.out.println("After: " + after);
 
         Assert.assertEquals(after, before);
-        /*int after = app.contactHelper().getContactsCount();
-        Assert.assertEquals(after, before);*/
     }
 }

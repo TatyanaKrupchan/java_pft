@@ -6,7 +6,9 @@ import org.openqa.selenium.WebElement;
 import pft.addressbook.model.GroupData;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class GroupHelper extends HelperBase {
 
@@ -16,7 +18,6 @@ public class GroupHelper extends HelperBase {
 
     public void submitNewGroupData() {
         click(By.name("submit"));
-        // wd.findElement(By.name("submit")).click();
     }
 
     public void fillNewGroupData(GroupData groupData) {
@@ -27,14 +28,19 @@ public class GroupHelper extends HelperBase {
 
     public void initCreateNewGroup() {
         click(By.name("new"));
-        // wd.findElement(By.name("new")).click();
     }
 
     public void deleteGroup(int groupIndex, ApplicationManager app) {
         selectGroup(groupIndex);
         click(By.name("delete"));
-        // wd.findElement(By.name("delete")).click();
         app.goTo().returnBackToGroupsTab();
+    }
+
+    public void deleteGroup(GroupData group, ApplicationManager app){
+        selectGroupById(group.getId());
+        click(By.name("delete"));
+        app.goTo().returnBackToGroupsTab();
+
     }
 
     public void addGroupIfNotExist(ApplicationManager app){
@@ -53,11 +59,17 @@ public class GroupHelper extends HelperBase {
         app.goTo().returnBackToGroupsTab();
     }
 
+    public void modifyGroupData(GroupData editData, ApplicationManager app){
+        selectGroupById(editData.getId());
+        initGroupModification();
+        fillNewGroupData(editData);
+        submitGroupModification();
+        app.goTo().returnBackToGroupsTab();
+    }
 
     public void selectGroup() {
         if (!wd.findElement(By.name("selected[]")).isSelected()) {
             click(By.name("selected[]"));
-            // wd.findElement(By.name("selected[]")).click();
         }
     }
 
@@ -65,7 +77,13 @@ public class GroupHelper extends HelperBase {
         WebElement element = wd.findElements(By.name("selected[]")).get(index);
         if (!element.isSelected()) {
             element.click();
-            // wd.findElement(By.name("selected[]")).click();
+        }
+    }
+
+    public void selectGroupById(int id) {
+        WebElement element = wd.findElement(By.cssSelector("input[value='"+ id +"']"));
+        if (!element.isSelected()) {
+            element.click();
         }
     }
 
@@ -102,4 +120,17 @@ public class GroupHelper extends HelperBase {
         }
         return groups;
     }
+
+    public Set<GroupData> groupSet() {
+        Set<GroupData> groups = new HashSet<GroupData>();
+        List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));
+        for (WebElement element : elements) {
+            String name = element.getText();
+            String id = element.findElement(By.tagName("input")).getAttribute("value");
+            GroupData group = new GroupData().withId(Integer.parseInt(id)).withGroupName(name);
+            groups.add(group);
+        }
+        return groups;
+    }
+
 }

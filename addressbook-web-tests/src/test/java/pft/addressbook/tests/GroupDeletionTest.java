@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 import pft.addressbook.model.GroupData;
 
 import java.util.List;
+import java.util.Set;
 
 public class GroupDeletionTest extends TestBase {
 
@@ -16,13 +17,13 @@ public class GroupDeletionTest extends TestBase {
 
     @Test
     public void testGroupDeletion() {
-        List<GroupData> before = app.groupHelper().groupList();
-        int groupIndex = before.size() - 1;
-        app.groupHelper().deleteGroup(groupIndex, app);
-        List<GroupData> after = app.groupHelper().groupList();
+        Set<GroupData> before = app.groupHelper().groupSet();
+        GroupData deleteGroup = before.iterator().next();
+        app.groupHelper().deleteGroup(deleteGroup, app);
+        Set<GroupData> after = app.groupHelper().groupSet();
         Assert.assertEquals(after.size(), before.size() - 1);
 
-        before.remove(groupIndex);
+        before.remove(deleteGroup);
         Assert.assertEquals(after, before);
     }
 }
