@@ -3,12 +3,12 @@ package pft.addressbook.model;
 import java.util.Objects;
 
 public class GroupData {
-    private int id;
-    private final String groupName;
-    private final String groupHeader;
-    private final String groupComment;
+    private int id = Integer.MAX_VALUE;
+    private String groupName;
+    private String groupHeader;
+    private String groupComment;
 
-    public GroupData(int id, String groupName, String groupHeader, String groupComment) {
+    /*public GroupData(int id, String groupName, String groupHeader, String groupComment) {
         this.id = id;
         this.groupName = groupName;
         this.groupHeader = groupHeader;
@@ -20,7 +20,7 @@ public class GroupData {
         this.groupName = groupName;
         this.groupHeader = groupHeader;
         this.groupComment = groupComment;
-    }
+    }*/
 
     public int getId() {
         return id;
@@ -38,8 +38,24 @@ public class GroupData {
         return groupComment;
     }
 
-    public void setId(int id) {
+    public GroupData withId(int id) {
         this.id = id;
+        return this;
+    }
+
+    public GroupData withGroupName(String groupName) {
+        this.groupName = groupName;
+        return this;
+    }
+
+    public GroupData withGroupHeader(String groupHeader) {
+        this.groupHeader = groupHeader;
+        return this;
+    }
+
+    public GroupData withGroupComment(String groupComment) {
+        this.groupComment = groupComment;
+        return this;
     }
 
     @Override

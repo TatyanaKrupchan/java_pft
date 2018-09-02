@@ -28,7 +28,7 @@ public class ContactModificationTest extends TestBase {
                     null, null, null, null,
                     "Test_Email", "Test_Email2");
             app.getContactHelper().createNewContact(contactDetails);
-            app.getNavigationHelper().returnToHomePage();
+            app.goTo().returnToHomePage();
         }
 
         // int before = app.getContactHelper().getContactsCount();
@@ -37,7 +37,7 @@ public class ContactModificationTest extends TestBase {
         app.getContactHelper().initModification();
         app.getContactHelper().fillContactData(contactDetailsEdited);
         app.getContactHelper().submitContactModificationData();
-        app.getNavigationHelper().waitForRedirectionToMainPage();
+        app.goTo().waitForRedirectionToMainPage();
 
         List<ContactData> after = app.getContactHelper().getContactsList();
         before.remove(0);

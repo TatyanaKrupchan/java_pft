@@ -30,10 +30,29 @@ public class GroupHelper extends HelperBase {
         // wd.findElement(By.name("new")).click();
     }
 
-    public void deleteGroup() {
+    public void deleteGroup(int groupIndex, ApplicationManager app) {
+        selectGroup(groupIndex);
         click(By.name("delete"));
         // wd.findElement(By.name("delete")).click();
+        app.goTo().returnBackToGroupsTab();
     }
+
+    public void addGroupIfNotExist(ApplicationManager app){
+        app.goTo().groupsTab();
+        if (groupList().size() == 0) {
+            createGroup(new GroupData().withGroupName("Test_groupname1"));
+            app.goTo().returnBackToGroupsTab();
+        }
+    }
+
+    public void modifyGroupData(int groupIndex, GroupData editData, ApplicationManager app){
+        selectGroup(groupIndex);
+        initGroupModification();
+        fillNewGroupData(editData);
+        submitGroupModification();
+        app.goTo().returnBackToGroupsTab();
+    }
+
 
     public void selectGroup() {
         if (!wd.findElement(By.name("selected[]")).isSelected()) {
@@ -72,13 +91,13 @@ public class GroupHelper extends HelperBase {
         return wd.findElements(By.name("selected[]")).size();
     }
 
-    public List<GroupData> getGroupList() {
+    public List<GroupData> groupList() {
         List<GroupData> groups = new ArrayList<GroupData>();
         List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));
         for (WebElement element : elements) {
             String name = element.getText();
             String id = element.findElement(By.tagName("input")).getAttribute("value");
-            GroupData group = new GroupData(Integer.parseInt(id), name, null, null);
+            GroupData group = new GroupData().withId(Integer.parseInt(id)).withGroupName(name);
             groups.add(group);
         }
         return groups;

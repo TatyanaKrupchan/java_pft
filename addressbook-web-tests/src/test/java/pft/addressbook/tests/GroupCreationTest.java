@@ -5,19 +5,18 @@ import org.testng.annotations.Test;
 import pft.addressbook.model.GroupData;
 
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 
 public class GroupCreationTest extends TestBase {
 
     @Test
     public void testForGroup() {
-        app.getNavigationHelper().gotoGroupsTab();
-        List<GroupData> before = app.getGroupHelper().getGroupList();
-        GroupData group = new GroupData("Test_groupname2", "Test_groupheader2", "Test_comment2");
-        app.getGroupHelper().createGroup(group);
-        app.getNavigationHelper().returnBackToGroupsTab();
-        List<GroupData> after = app.getGroupHelper().getGroupList();
+        app.goTo().groupsTab();
+        List<GroupData> before = app.groupHelper().groupList();
+        GroupData group = new GroupData().withGroupName("Test_groupname2").withGroupHeader("Test_groupheader2").withGroupComment("Test_comment2");
+        app.groupHelper().createGroup(group);
+        app.goTo().returnBackToGroupsTab();
+        List<GroupData> after = app.groupHelper().groupList();
         Assert.assertEquals(after.size(), before.size() + 1);
 
         // group.setId(after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId());

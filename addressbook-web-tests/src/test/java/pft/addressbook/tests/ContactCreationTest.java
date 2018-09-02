@@ -23,7 +23,7 @@ public class ContactCreationTest extends TestBase {
         System.out.println("New name generated: " + generatedString);
         List<ContactData> before = app.getContactHelper().getContactsList();
         app.getContactHelper().createNewContact(contactDetails);
-        app.getNavigationHelper().returnToHomePage();
+        app.goTo().returnToHomePage();
         List<ContactData> after = app.getContactHelper().getContactsList();
         before.add(contactDetailsShort);
         Comparator<? super ContactData> byLastName = (g1, g2) ->  g1.getLastName().compareTo(g2.getLastName());

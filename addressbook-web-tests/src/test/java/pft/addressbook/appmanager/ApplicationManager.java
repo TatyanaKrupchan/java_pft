@@ -24,7 +24,7 @@ public class ApplicationManager {
         this.browser = browser;
     }
 
-    public void init() {
+    public ApplicationManager init() {
         final String login = "admin";
         final String password = "secret";
         //String browser = BrowserType.FIREFOX;
@@ -39,7 +39,6 @@ public class ApplicationManager {
             System.out.println("Browser is not supported.");
         }
 
-
         wd.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         wd.get("http://localhost/addressbook/");
         groupHelper = new GroupHelper(wd);
@@ -47,6 +46,7 @@ public class ApplicationManager {
         sessionHelper = new SessionHelper(wd);
         contactHelper = new ContactHelper(wd);
         sessionHelper.login(login, password);
+        return this;
     }
 
     public String randomString(int len) {
@@ -62,11 +62,11 @@ public class ApplicationManager {
         wd.quit();
     }
 
-    public GroupHelper getGroupHelper() {
+    public GroupHelper groupHelper() {
         return groupHelper;
     }
 
-    public NavigationHelper getNavigationHelper() {
+    public NavigationHelper goTo() {
         return navigationHelper;
     }
 
