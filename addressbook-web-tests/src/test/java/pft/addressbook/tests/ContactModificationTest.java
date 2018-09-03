@@ -19,7 +19,7 @@ public class ContactModificationTest extends TestBase {
 
     @BeforeMethod
     public void ensurePrecondition() {
-        app.contactHelper().addGroupIfNotExist(app);
+        app.contactHelper().addContactIfNotExist(app);
     }
 
     @Test
@@ -35,15 +35,8 @@ public class ContactModificationTest extends TestBase {
         Contacts before = app.contactHelper().getContactsSet();
         ContactData modifyContact = before.iterator().next();
 
-        app.contactHelper().modifyContact(contactDetailsEdited, app);
+        app.contactHelper().modifyContact(modifyContact, contactDetailsEdited, app);
         Contacts after = app.contactHelper().getContactsSet();
-        /*before.remove(modifyContact);
-        before.add(contactDetailsEdited);
-
-        System.out.println("Before: " + before);
-        System.out.println("After: " + after);
-
-        Assert.assertEquals(after, before);*/
         assertThat(after, equalTo(before.withoutContact(modifyContact).withAdded(contactDetailsEdited)));
     }
 }

@@ -20,7 +20,7 @@ public class ContactDeletionTest extends TestBase {
 
     @BeforeMethod
     public void ensurePrecondition() {
-        app.contactHelper().addGroupIfNotExist(app);
+        app.contactHelper().addContactIfNotExist(app);
     }
 
     @Test

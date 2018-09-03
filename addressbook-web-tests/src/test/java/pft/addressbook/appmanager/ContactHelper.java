@@ -60,18 +60,10 @@ public class ContactHelper extends HelperBase {
         click(By.xpath("//div[@id='content']//input[@value='DELETE']"));
         acceptContactDeletion(countToRemove);
         app.goTo().waitForRedirectionToMainPage();
-
-        /*
-                selectGroupById(group.getId());
-        click(By.name("delete"));
-        app.goTo().returnBackToGroupsTab();
-
-         */
-
     }
 
     private void selectContactById(int id) {
-        WebElement element = wd.findElement(By.cssSelector("input[value='"+ id +"']"));
+        WebElement element = wd.findElement(By.cssSelector("input[value='" + id + "']"));
         if (!element.isSelected()) {
             element.click();
         }
@@ -82,8 +74,8 @@ public class ContactHelper extends HelperBase {
         acceptAlertWithVerification(alertText);
     }
 
-    public void initModification() {
-        click(By.xpath("//a/img[@title='EDIT']"));
+    public void initModification(ContactData contact) {
+        wd.findElement(By.xpath("//input[@value='" + contact.getId()+ "']/ancestor::tr//a/img[@title='EDIT']")).click();
     }
 
     public void submitContactModificationData() {
@@ -104,7 +96,7 @@ public class ContactHelper extends HelperBase {
         return wd.findElements(By.name("selected[]")).size();
     }
 
-    public void addGroupIfNotExist(ApplicationManager app) {
+    public void addContactIfNotExist(ApplicationManager app) {
         if (app.contactHelper().getContactsList().size() == 0) {
             String generatedString = app.randomString(10);
             ContactData contactDetails = new ContactData().withFirstName("Test_FirstName " + generatedString)
@@ -114,8 +106,8 @@ public class ContactHelper extends HelperBase {
         }
     }
 
-    public void modifyContact(ContactData contactDetailsEdited, ApplicationManager app) {
-        app.contactHelper().initModification();
+    public void modifyContact(ContactData contact, ContactData contactDetailsEdited, ApplicationManager app) {
+        app.contactHelper().initModification(contact);
         app.contactHelper().fillContactData(contactDetailsEdited);
         app.contactHelper().submitContactModificationData();
         app.goTo().waitForRedirectionToMainPage();
